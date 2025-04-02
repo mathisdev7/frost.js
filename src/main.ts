@@ -6,14 +6,14 @@ interface VNode {
 
 class Frost {
   private vDOM: VNode | null;
-  private oldVDOM: VNode | null;
+  // private oldVDOM: VNode | null;
   private root: HTMLElement | null;
   public state: Record<string, any>;
   public varRegex: RegExp;
 
   constructor() {
     this.vDOM = null;
-    this.oldVDOM = null;
+    // this.oldVDOM = null;
     this.root = null;
     this.state = { counter: 0 };
     this.varRegex = new RegExp(/\{\{([^}]+)\}\}/g);
@@ -71,7 +71,7 @@ class Frost {
    * @param root - element of the dom to render
    */
   render(vDOM: VNode, root: HTMLElement) {
-    this.oldVDOM = this.vDOM;
+    // this.oldVDOM = this.vDOM;
     this.vDOM = vDOM;
     this.root = root;
     this.update();
