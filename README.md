@@ -9,7 +9,8 @@
 - **Virtual DOM**: Efficiently manage and update the UI.
 - **Rendering**: Convert virtual DOM nodes into real DOM elements.
 - **Props Handling**: Pass properties to components.
-- **State Management**: Experiment with basic state functionality.
+- **State Management**: Supports dynamic updates without re-rendering the full DOM.
+- **Template Syntax**: Bind state variables in the DOM using `{{state}}` placeholders.
 
 ## **Installation**
 
@@ -24,22 +25,25 @@ No dependencies for now. Just include **frost.js** directly in your HTML for tes
 
 ## **Usage**
 
-Example of creating and rendering a simple component:
+Example of creating and rendering a simple component with state binding:
 
 ```js
 const frost = new Frost();
-const vnode = frost.createElement(
-  "div",
-  { id: "container" },
-  frost.createElement("h1", {}, "Hello World"),
-  frost.createElement("p", {}, "Frost.js is awesome!")
-);
-
 const rootElement = document.getElementById("app");
 if (rootElement) {
-  frost.render(vnode, rootElement);
+  frost.render(frost.parseDOM(rootElement), rootElement);
+
+  setTimeout(() => {
+    frost.setState({ counter: frost.state.counter + 1 });
+  }, 2000);
+
+  setTimeout(() => {
+    frost.setState({ counter: frost.state.counter + 1 });
+  }, 4000);
 }
 ```
+
+This will automatically update text nodes containing `{{counter}}` in the DOM.
 
 ## **Contributing**
 
@@ -48,3 +52,4 @@ Feel free to contribute by creating issues or submitting pull requests. This pro
 ## **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
