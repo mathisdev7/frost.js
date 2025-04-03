@@ -21,7 +21,11 @@
         </p>
       </div>
       <div>
-        <h2>My name is {{counter}}</h2>
+        <h2>My name is {{ name }}</h2>
+        <p on-mouse-ova="mouseOva">Counter: {{ counter }}</p>
+        <button on-click="incrementCounter">Increment</button>
+        <button on-click="decrementCounter">Decrement</button>
+        <button on-click="resetCounter">Reset</button>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

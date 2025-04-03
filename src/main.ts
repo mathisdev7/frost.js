@@ -4,6 +4,20 @@ interface VNode {
   children: (VNode | string)[];
 }
 
+declare global {
+  interface Window {
+    [key: string]: (...args: any[]) => any;
+  }
+}
+
+const PropsEvent: Record<string, string> = {
+  "on-click": "click",
+  "on-k-press": "onkeypress",
+  "on-k-down": "onkeydown",
+  "on-load": "onload",
+  "on-mouse-ova": "onmouseover",
+};
+
 class Frost {
   private vDOM: VNode | null;
   // private oldVDOM: VNode | null;
@@ -71,33 +85,11 @@ class Frost {
    * @param root - element of the dom to render
    */
   render(vDOM: VNode, root: HTMLElement) {
-    // this.oldVDOM = this.vDOM;
     this.vDOM = vDOM;
     this.root = root;
     this.update();
   }
 
-  /**
-   * convert vnode to a real dom element that can be attached to root element
-   * @param vDOM - virtual dom node to convert
-   * @param root - root element
-   */
-  //   private renderElement(vDOM: VNode, root: HTMLElement) {
-  //     const el = document.createElement(vDOM.type);
-  //     if (vDOM.props) {
-  //       for (const [key, value] of Object.entries(vDOM.props))
-  //         el.setAttribute(key, value);
-  //     }
-  //     for (const children of vDOM.children) {
-  //       if (typeof children === "string") {
-  //         el.append(document.createTextNode(children));
-  //       } else {
-  //         this.renderElement(children, el);
-  //       }
-  //     }
-  //     root.appendChild(el);
-  //     this.updateTextNodes(root, vDOM);
-  //   }
   public parseDOM(node: Node): VNode | string {
     if (node.nodeType === Node.TEXT_NODE) return node.textContent || "";
     if (!(node instanceof HTMLElement)) return "";
@@ -113,21 +105,46 @@ class Frost {
       props,
       children,
     };
+    if (vDOM.props) {
+      for (const [key] of Object.entries(vDOM.props)) {
+        const funcName = vDOM.props[key] as string;
+        if (typeof window[funcName] === "function" && key in PropsEvent) {
+          console.log(PropsEvent[key]);
+          node.addEventListener(PropsEvent[key], (event) => {
+            window[funcName](event);
+          });
+        }
+      }
+    }
     return vDOM;
   }
 }
 
 const frost = new Frost();
 
+window.incrementCounter = () => {
+  frost.setState({ counter: frost.state.counter + 1 });
+};
+
+window.decrementCounter = () => {
+  frost.setState({ counter: frost.state.counter - 1 });
+};
+
+window.resetCounter = () => {
+  frost.setState({ counter: 0 });
+};
+
+window.load = () => {
+  console.log("loaded");
+};
+
+window.mouseOva = () => {
+  console.log("mouse over");
+};
+
 const rootElement = document.getElementById("app");
 if (rootElement) {
   frost.render(frost.parseDOM(rootElement) as VNode, rootElement);
 
-  setTimeout(() => {
-    frost.setState({ counter: frost.state.counter + 1 });
-  }, 2000);
-
-  setTimeout(() => {
-    frost.setState({ counter: frost.state.counter + 1 });
-  }, 4000);
+  frost.setState({ name: "frost" });
 }
