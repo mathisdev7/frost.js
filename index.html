@@ -3,13 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="src/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + TS</title>
   </head>
   <body>
     <div id="app">
-      <div class="salut">
-        <h1>Hello Vite + TypeScript!</h1>
+      <div
+        class="flex flex-col items-center justify-center h-screen bg-gray-800 text-white gap-2"
+      >
+        <h1 class="text-white text-2xl">Hello Vite + TypeScript!</h1>
+        <br />
         <p>
           Edit <code>index.html</code>, <code>src/main.ts</code> and save to
           test HMR.
@@ -19,13 +23,28 @@
             >Documentation</a
           >
         </p>
-      </div>
-      <div>
         <h2>My name is {{ name }}</h2>
         <p on-mouse-ova="mouseOva">Counter: {{ counter }}</p>
-        <button on-click="incrementCounter">Increment</button>
-        <button on-click="decrementCounter">Decrement</button>
-        <button on-click="resetCounter">Reset</button>
+        <div class="flex flex-row gap-3 items-center">
+          <button
+            class="bg-amber-50 text-black p-2 rounded-lg cursor-pointer"
+            on-click="incrementCounter"
+          >
+            Increment
+          </button>
+          <button
+            class="bg-red-500 p-2 rounded-lg cursor-pointer"
+            on-click="decrementCounter"
+          >
+            Decrement
+          </button>
+          <button
+            class="bg-blue-300 p-2 rounded-lg cursor-pointer"
+            on-click="resetCounter"
+          >
+            Reset
+          </button>
+        </div>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
